@@ -35,7 +35,7 @@
             </header>
 
             <div class="article-body">
-                <p><%= post.content.replace(/\n/g, '<br>') %></p>
+                <%- post.content %>
             </div>
 
             <% if (userId && userId == post.author_id) { %>
