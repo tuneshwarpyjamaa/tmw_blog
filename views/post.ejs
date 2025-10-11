@@ -8,11 +8,16 @@
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1><a href="/posts">The Mandate Wire</a></h1>
-            <p class="tagline">Empowering voices, inspiring change</p>
-        </div>
+        <div class="logo"><a href="/posts">The Mandate <span class="accent">Wire</span></a></div>
         <nav>
+            <a href="/posts">Home</a>
+            <a href="/category/policy">Policy</a>
+            <a href="/category/global-affairs">Global Affairs</a>
+            <a href="/category/technology">Technology</a>
+            <a href="/category/opinion">Opinion</a>
+            <a href="/about">About</a>
+        </nav>
+        <div class="user-menu">
             <% if (userId) { %>
                 <a href="/posts/create">Create Post</a>
                 <form action="/auth/logout" method="post" style="display:inline;">
@@ -22,20 +27,60 @@
                 <a href="/auth/login">Login</a>
                 <a href="/auth/register">Register</a>
             <% } %>
-        </nav>
+        </div>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </header>
     <main>
-        <article class="article">
-            <h2><%= post.title %></h2>
-            <p class="meta">By <%= post.username %> on <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+        <article class="article-detail">
+            <h1><%= post.title %></h1>
+            <p class="meta">By <%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %> • 5 min read</p>
+            <!-- Featured Image placeholder -->
+            <!-- <img src="featured-image.jpg" alt="Featured Image"> -->
             <div class="content"><%= post.content %></div>
             <% if (userId && userId == post.author_id) { %>
-                <a href="/posts/<%= post.post_id %>/edit">Edit</a>
-                <form action="/posts/<%= post.post_id %>/delete" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
+                <div style="margin-top: 2rem;">
+                    <a href="/posts/<%= post.post_id %>/edit">Edit</a>
+                    <form action="/posts/<%= post.post_id %>/delete" method="post" style="display:inline; margin-left: 1rem;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
             <% } %>
         </article>
+
+        <!-- Author Bio placeholder -->
+        <section class="author-bio" style="background: var(--secondary); padding: 2rem; margin: 2rem 0; border-radius: 8px;">
+            <h3>About the Author</h3>
+            <div style="display: flex; align-items: center;">
+                <img src="https://via.placeholder.com/80" alt="Author" style="border-radius: 50%; margin-right: 1rem;">
+                <div>
+                    <strong><%= post.username %></strong>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Articles placeholder -->
+        <section class="related-articles">
+            <h3>Related Articles</h3>
+            <div class="grid">
+                <!-- Placeholder for related posts -->
+                <article class="article-card">
+                    <h3><a href="#">Related Article 1</a></h3>
+                    <p class="excerpt">Excerpt of related article...</p>
+                    <p class="meta">Author • Date</p>
+                </article>
+                <article class="article-card">
+                    <h3><a href="#">Related Article 2</a></h3>
+                    <p class="excerpt">Excerpt of related article...</p>
+                    <p class="meta">Author • Date</p>
+                </article>
+            </div>
+        </section>
+
         <section class="comments">
             <h3>Comments</h3>
             <% comments.forEach(comment => { %>
@@ -55,20 +100,32 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>The Mandate Wire</h3>
+                <div class="footer-logo">The Mandate <span class="accent">Wire</span></div>
                 <p>Delivering quality content and fostering community engagement.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="/posts">Home</a></li>
-                    <li><a href="/auth/login">Login</a></li>
-                    <li><a href="/auth/register">Register</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/privacy">Privacy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Contact</h3>
-                <p>Email: info@themandatewire.com</p>
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" aria-label="Twitter">🐦</a>
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="LinkedIn">💼</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Stay updated with the latest insights.</p>
+                <div class="footer-newsletter">
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </div>
             </div>
         </div>
         <p>&copy; 2025 The Mandate Wire. All rights reserved.</p>
