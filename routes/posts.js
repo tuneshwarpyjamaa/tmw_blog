@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/create', requireAuth, (req, res) => {
-    res.render('create');
+    res.render('create', { userId: req.session.userId });
 });
 
 router.post('/create', requireAuth, async (req, res) => {
@@ -42,7 +42,7 @@ router.get('/:postId', async (req, res) => {
 router.get('/:postId/edit', requireAuth, async (req, res) => {
     const result = await pool.query('SELECT * FROM posts WHERE post_id = $1 AND author_id = $2', [req.params.postId, req.session.userId]);
     if (result.rows.length > 0) {
-        res.render('edit', { post: result.rows[0] });
+        res.render('edit', { post: result.rows[0], userId: req.session.userId });
     } else {
         res.redirect('/posts');
     }
