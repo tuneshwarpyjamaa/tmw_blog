@@ -6,6 +6,7 @@ const { Pool } = require('pg');
 const app = express();
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    family: 4,
 });
 
 app.use(express.static('public'));
