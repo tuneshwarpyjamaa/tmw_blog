@@ -28,17 +28,53 @@
         </div>
     </header>
     <main>
-        <div class="article-feed">
-            <% posts.forEach(post => { %>
-                <article class="article-card">
-                    <div class="article-content">
-                        <p class="meta"><%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
-                        <h2><a href="/posts/<%= post.post_id %>"><%= post.title %></a></h2>
-                        <p class="excerpt"><%= post.content.substring(0, 200) %>...</p>
-                        <a href="/posts/<%= post.post_id %>" class="read-more">Read more</a>
+        <% if (posts.length > 0) { %>
+            <section class="latest-post">
+                <h2>Breaking News</h2>
+                <article class="latest-article">
+                    <div class="latest-content">
+                        <p class="meta"><%= posts[0].username %> • <%= new Date(posts[0].published_at || posts[0].created_at).toLocaleDateString() %></p>
+                        <h1><a href="/posts/<%= posts[0].post_id %>"><%= posts[0].title %></a></h1>
+                        <p class="excerpt"><%= posts[0].content.substring(0, 300) %>...</p>
+                        <a href="/posts/<%= posts[0].post_id %>" class="read-more">Read more</a>
                     </div>
                 </article>
-            <% }); %>
+            </section>
+        <% } %>
+
+        <% if (posts.length > 0) { %>
+            <section class="latest-posts-section">
+                <h2>Latest Posts</h2>
+                <div class="latest-posts-grid">
+                    <% posts.slice(1).forEach(post => { %>
+                        <article class="latest-post-card">
+                            <div class="latest-post-content">
+                                <p class="meta"><%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+                                <h3><a href="/posts/<%= post.post_id %>"><%= post.title %></a></h3>
+                                <p class="excerpt"><%= post.content.substring(0, 150) %>...</p>
+                                <a href="/posts/<%= post.post_id %>" class="read-more">Read more</a>
+                            </div>
+                        </article>
+                    <% }); %>
+                </div>
+            </section>
+        <% } %>
+
+        <div class="content-wrapper">
+            <div class="article-feed">
+                <% posts.slice(1).forEach(post => { %>
+                    <article class="article-card">
+                        <div class="article-content">
+                            <p class="meta"><%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+                            <h2><a href="/posts/<%= post.post_id %>"><%= post.title %></a></h2>
+                            <p class="excerpt"><%= post.content.substring(0, 200) %>...</p>
+                            <a href="/posts/<%= post.post_id %>" class="read-more">Read more</a>
+                        </div>
+                    </article>
+                <% }); %>
+            </div>
+            <aside class="sidebar">
+            </aside>
         </div>
     </main>
     <footer>
