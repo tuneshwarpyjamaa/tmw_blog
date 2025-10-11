@@ -8,26 +8,19 @@
 </head>
 <body>
     <header>
-        <div class="logo"><a href="/posts">The Mandate <span class="accent">Wire</span></a></div>
+        <div class="logo">The Mandate <span class="accent">Wire</span></div>
         <nav>
             <a href="/posts">Home</a>
-            <a href="/category/policy">Policy</a>
-            <a href="/category/global-affairs">Global Affairs</a>
-            <a href="/category/technology">Technology</a>
-            <a href="/category/opinion">Opinion</a>
             <a href="/about">About</a>
-        </nav>
-        <div class="user-menu">
             <% if (userId) { %>
                 <a href="/posts/create">Create Post</a>
                 <form action="/auth/logout" method="post" style="display:inline;">
-                    <button type="submit">Logout</button>
+                    <button type="submit" class="nav-button">Logout</button>
                 </form>
             <% } else { %>
                 <a href="/auth/login">Login</a>
-                <a href="/auth/register">Register</a>
             <% } %>
-        </div>
+        </nav>
         <div class="hamburger">
             <span></span>
             <span></span>
@@ -36,64 +29,49 @@
     </header>
     <main>
         <article class="article-detail">
-            <h1><%= post.title %></h1>
-            <p class="meta">By <%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %> • 5 min read</p>
-            <!-- Featured Image placeholder -->
-            <!-- <img src="featured-image.jpg" alt="Featured Image"> -->
-            <div class="content"><%= post.content %></div>
+            <header class="article-header">
+                <h1><%= post.title %></h1>
+                <p class="meta">By <%= post.username %> • <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+            </header>
+
+            <div class="article-body">
+                <p><%= post.content.replace(/\n/g, '<br>') %></p>
+            </div>
+
             <% if (userId && userId == post.author_id) { %>
-                <div style="margin-top: 2rem;">
-                    <a href="/posts/<%= post.post_id %>/edit">Edit</a>
-                    <form action="/posts/<%= post.post_id %>/delete" method="post" style="display:inline; margin-left: 1rem;">
-                        <button type="submit">Delete</button>
+                <div class="article-actions">
+                    <a href="/posts/<%= post.post_id %>/edit" class="button">Edit Post</a>
+                    <form action="/posts/<%= post.post_id %>/delete" method="post" style="display:inline;">
+                        <button type="submit" class="button button-delete">Delete Post</button>
                     </form>
                 </div>
             <% } %>
         </article>
 
-        <!-- Author Bio placeholder -->
-        <section class="author-bio" style="background: var(--secondary); padding: 2rem; margin: 2rem 0; border-radius: 8px;">
-            <h3>About the Author</h3>
-            <div style="display: flex; align-items: center;">
-                <img src="https://via.placeholder.com/80" alt="Author" style="border-radius: 50%; margin-right: 1rem;">
-                <div>
-                    <strong><%= post.username %></strong>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Related Articles placeholder -->
-        <section class="related-articles">
-            <h3>Related Articles</h3>
-            <div class="grid">
-                <!-- Placeholder for related posts -->
-                <article class="article-card">
-                    <h3><a href="#">Related Article 1</a></h3>
-                    <p class="excerpt">Excerpt of related article...</p>
-                    <p class="meta">Author • Date</p>
-                </article>
-                <article class="article-card">
-                    <h3><a href="#">Related Article 2</a></h3>
-                    <p class="excerpt">Excerpt of related article...</p>
-                    <p class="meta">Author • Date</p>
-                </article>
-            </div>
-        </section>
-
         <section class="comments">
-            <h3>Comments</h3>
-            <% comments.forEach(comment => { %>
-                <div class="comment">
-                    <p><strong><%= comment.username %></strong> on <%= new Date(comment.created_at).toLocaleDateString() %></p>
-                    <p><%= comment.content %></p>
-                </div>
-            <% }); %>
+            <h2>Comments</h2>
+            <div class="comment-list">
+                <% if (comments.length > 0) { %>
+                    <% comments.forEach(comment => { %>
+                        <div class="comment">
+                            <p class="meta"><strong><%= comment.username %></strong> • <%= new Date(comment.created_at).toLocaleDateString() %></p>
+                            <p><%= comment.content %></p>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No comments yet. Be the first to share your thoughts!</p>
+                <% } %>
+            </div>
+
             <% if (userId) { %>
-                <form action="/comments/<%= post.post_id %>" method="post">
-                    <textarea name="content" required></textarea>
-                    <button type="submit">Add Comment</button>
+                <form action="/comments/<%= post.post_id %>" method="post" class="comment-form">
+                    <textarea name="content" placeholder="Join the discussion..." required></textarea>
+                    <button type="submit">Submit Comment</button>
                 </form>
+            <% } else { %>
+                <p>
+                    <a href="/auth/login">Log in</a> to leave a comment.
+                </p>
             <% } %>
         </section>
     </main>
@@ -101,34 +79,25 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">The Mandate <span class="accent">Wire</span></div>
-                <p>Delivering quality content and fostering community engagement.</p>
+                <p>Insights on the digital frontier.</p>
             </div>
             <div class="footer-section">
-                <h3>Quick Links</h3>
+                <h3>Navigate</h3>
                 <ul>
+                    <li><a href="/posts">Home</a></li>
                     <li><a href="/about">About</a></li>
                     <li><a href="/contact">Contact</a></li>
-                    <li><a href="/privacy">Privacy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-icons">
-                    <a href="#" aria-label="Twitter">🐦</a>
-                    <a href="#" aria-label="Facebook">📘</a>
-                    <a href="#" aria-label="LinkedIn">💼</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Newsletter</h3>
-                <p>Stay updated with the latest insights.</p>
-                <div class="footer-newsletter">
-                    <input type="email" placeholder="Enter your email">
-                    <button type="submit">Subscribe</button>
-                </div>
+                <h3>&nbsp;</h3>
+                <ul>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
             </div>
         </div>
-        <p>&copy; 2025 The Mandate Wire. All rights reserved.</p>
+        <p class="copyright">&copy; 2025 The Mandate Wire. All rights reserved.</p>
     </footer>
 </body>
 </html>
