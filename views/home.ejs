@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mandate Wire</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>The Mandate Wire</h1>
+            <p class="tagline">Empowering voices, inspiring change</p>
+        </div>
+        <nav>
+            <% if (userId) { %>
+                <a href="/posts/create">Create Post</a>
+                <form action="/auth/logout" method="post" style="display:inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            <% } else { %>
+                <a href="/auth/login">Login</a>
+                <a href="/auth/register">Register</a>
+            <% } %>
+        </nav>
+    </header>
+    <main>
+        <% posts.forEach(post => { %>
+            <article class="post">
+                <h2><a href="/posts/<%= post.post_id %>"><%= post.title %></a></h2>
+                <p>By <%= post.username %> on <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+                <p><%= post.content.substring(0, 200) %>...</p>
+            </article>
+        <% }); %>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>The Mandate Wire</h3>
+                <p>Delivering quality content and fostering community engagement.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/posts">Home</a></li>
+                    <li><a href="/auth/login">Login</a></li>
+                    <li><a href="/auth/register">Register</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@themandatewire.com</p>
+            </div>
+        </div>
+        <p>&copy; 2025 The Mandate Wire. All rights reserved.</p>
+    </footer>
+</body>
+</html>

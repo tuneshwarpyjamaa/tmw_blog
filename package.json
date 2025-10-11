@@ -1,0 +1,31 @@
+{
+  "name": "the-mandate-wire",
+  "version": "1.0.0",
+  "description": "The Mandate Wire - A simple blog website that allows users to create, publish, and read blog posts. Users can register, log in, comment on posts, and browse posts by categories or tags. The website aims to provide a clean, user-friendly platform for blogging and reader engagement.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuneshwarpyjamaa/tmw_blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuneshwarpyjamaa/tmw_blog/issues"
+  },
+  "homepage": "https://github.com/tuneshwarpyjamaa/tmw_blog#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "pg": "^8.16.3"
+  }
+}

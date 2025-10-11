@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %> - The Mandate Wire</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><a href="/posts">The Mandate Wire</a></h1>
+            <p class="tagline">Empowering voices, inspiring change</p>
+        </div>
+        <nav>
+            <% if (userId) { %>
+                <a href="/posts/create">Create Post</a>
+                <form action="/auth/logout" method="post" style="display:inline;">
+                    <button type="submit">Logout</button>
+                </form>
+            <% } else { %>
+                <a href="/auth/login">Login</a>
+                <a href="/auth/register">Register</a>
+            <% } %>
+        </nav>
+    </header>
+    <main>
+        <article class="article">
+            <h2><%= post.title %></h2>
+            <p class="meta">By <%= post.username %> on <%= new Date(post.published_at || post.created_at).toLocaleDateString() %></p>
+            <div class="content"><%= post.content %></div>
+            <% if (userId && userId == post.author_id) { %>
+                <a href="/posts/<%= post.post_id %>/edit">Edit</a>
+                <form action="/posts/<%= post.post_id %>/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            <% } %>
+        </article>
+        <section class="comments">
+            <h3>Comments</h3>
+            <% comments.forEach(comment => { %>
+                <div class="comment">
+                    <p><strong><%= comment.username %></strong> on <%= new Date(comment.created_at).toLocaleDateString() %></p>
+                    <p><%= comment.content %></p>
+                </div>
+            <% }); %>
+            <% if (userId) { %>
+                <form action="/comments/<%= post.post_id %>" method="post">
+                    <textarea name="content" required></textarea>
+                    <button type="submit">Add Comment</button>
+                </form>
+            <% } %>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>The Mandate Wire</h3>
+                <p>Delivering quality content and fostering community engagement.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/posts">Home</a></li>
+                    <li><a href="/auth/login">Login</a></li>
+                    <li><a href="/auth/register">Register</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@themandatewire.com</p>
+            </div>
+        </div>
+        <p>&copy; 2025 The Mandate Wire. All rights reserved.</p>
+    </footer>
+</body>
+</html>
