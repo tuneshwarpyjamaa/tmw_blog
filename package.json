@@ -2,7 +2,7 @@
   "name": "the-mandate-wire",
   "version": "1.0.0",
   "description": "The Mandate Wire - A simple blog website that allows users to create, publish, and read blog posts. Users can register, log in, comment on posts, and browse posts by categories or tags. The website aims to provide a clean, user-friendly platform for blogging and reader engagement.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",

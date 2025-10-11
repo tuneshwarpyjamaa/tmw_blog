@@ -26,3 +26,12 @@ The Mandate Wire is a simple blog website that allows users to create, publish, 
 2. Install dependencies: `npm install`
 3. Set up PostgreSQL database and update `.env` with `DATABASE_URL`.
 4. Start the server: `npm start`
+
+## Deployment on Vercel
+1. Push your code to a Git repository (GitHub, GitLab, etc.).
+2. Connect your repository to Vercel.
+3. In Vercel dashboard, set the following environment variables:
+   - `DATABASE_URL`: Your PostgreSQL connection string
+   - `SECRET_KEY`: A secure secret key for sessions
+   - `NODE_ENV`: production
+4. Deploy. Vercel will automatically detect the `vercel.json` and deploy the Express app.
