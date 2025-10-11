@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const { Pool } = require('pg');
+const path = require('path');
 
 const app = express();
 const pool = new Pool({
@@ -21,7 +22,7 @@ app.use(session({
 }));
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 
 // Routes
 app.use('/auth', require('./routes/auth'));
