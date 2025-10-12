@@ -17,9 +17,18 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         await pool.query('INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3)', [username, email, hashedPassword]);
-        res.redirect('/login');
+        res.redirect('/auth/login');
     } catch (err) {
-        res.render('register', { error: 'Registration failed' });
+        console.error('Registration error:', err);
+        let errorMessage = 'Registration failed';
+        if (err.code === '23505') { // Unique constraint violation
+            if (err.constraint === 'users_username_key') {
+                errorMessage = 'Username already exists';
+            } else if (err.constraint === 'users_email_key') {
+                errorMessage = 'Email already exists';
+            }
+        }
+        res.render('register', { error: errorMessage });
     }
 });
 
