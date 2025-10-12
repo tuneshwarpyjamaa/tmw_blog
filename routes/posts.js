@@ -25,8 +25,8 @@ router.get('/create', requireAuth, (req, res) => {
 });
 
 router.post('/create', requireAuth, async (req, res) => {
-    const { title, content } = req.body;
-    await pool.query('INSERT INTO posts (title, content, author_id, status, published_at) VALUES ($1, $2, $3, \'published\', CURRENT_TIMESTAMP)', [title, content, req.session.userId]);
+    const { title, content, category } = req.body;
+    await pool.query('INSERT INTO posts (title, content, category, author_id, status, published_at) VALUES ($1, $2, $3, $4, \'published\', CURRENT_TIMESTAMP)', [title, content, category, req.session.userId]);
     res.redirect('/posts');
 });
 
@@ -49,8 +49,8 @@ router.get('/:postId/edit', requireAuth, async (req, res) => {
 });
 
 router.post('/:postId/edit', requireAuth, async (req, res) => {
-    const { title, content } = req.body;
-    await pool.query('UPDATE posts SET title = $1, content = $2, updated_at = CURRENT_TIMESTAMP WHERE post_id = $3 AND author_id = $4', [title, content, req.params.postId, req.session.userId]);
+    const { title, content, category } = req.body;
+    await pool.query('UPDATE posts SET title = $1, content = $2, category = $3, updated_at = CURRENT_TIMESTAMP WHERE post_id = $4 AND author_id = $5', [title, content, category, req.params.postId, req.session.userId]);
     res.redirect('/posts/' + req.params.postId);
 });
 
