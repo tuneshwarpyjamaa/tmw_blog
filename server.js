@@ -11,6 +11,11 @@ const app = express();
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     family: 4,
+    // Production-ready connection settings
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+    max: 20,
 });
 
 // Security middleware
@@ -33,7 +38,8 @@ app.use(helmet.hsts({
 // CORS configuration (restrict to same origin for security)
 const cors = require('cors');
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? false : true, // Disable CORS in production, allow in development
+    origin: process.env.NODE_ENV === 'production' ?
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : false) : true, // Use Vercel URL in production
     credentials: true
 }));
 
@@ -77,6 +83,37 @@ app.get('/', (req, res) => {
     res.redirect('/posts');
 });
 
-app.listen(process.env.PORT || 3000, () => {
+// Health check endpoint for monitoring
+app.get('/health', async (req, res) => {
+    try {
+        await pool.query('SELECT 1');
+        res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() });
+    } catch (error) {
+        res.status(500).json({ status: 'unhealthy', error: error.message });
+    }
+});
+
+// Graceful shutdown handling
+const server = app.listen(process.env.PORT || 3000, () => {
     console.log('Server running on port ' + (process.env.PORT || 3000));
 });
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    server.close(() => {
+        console.log('Process terminated');
+        pool.end();
+    });
+});
+
+process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully');
+    server.close(() => {
+        console.log('Process terminated');
+        pool.end();
+    });
+});
+
+// Export for Vercel serverless functions
+module.exports = app;
