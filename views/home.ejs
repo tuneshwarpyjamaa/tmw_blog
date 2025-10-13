@@ -4,6 +4,7 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>The Mandate Wire - Unpacking the Power, Analyzing the Policy</title>
+   <link rel="icon" type="image/png" href="/tmwicon.png">
    <!-- Load Tailwind CSS -->
    <script src="https://cdn.tailwindcss.com"></script>
    <!-- Configure Tailwind and custom styles -->
@@ -90,6 +91,15 @@
                    <div class="flex items-center space-x-4">
                        <a href="/posts/create" class="hidden md:inline-flex items-center justify-center px-4 py-2 text-xs font-bold rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-300">
                            Create Post
+                       </a>
+                       <a href="/posts/my-drafts" class="hidden md:inline-flex items-center justify-center px-4 py-2 text-xs font-bold rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300">
+                           My Drafts
+                       </a>
+                       <a href="/posts/review-queue" class="hidden md:inline-flex items-center justify-center px-4 py-2 text-xs font-bold rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition duration-300">
+                           Review Queue
+                       </a>
+                       <a href="/admin/users" class="hidden md:inline-flex items-center justify-center px-4 py-2 text-xs font-bold rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-300">
+                           Admin
                        </a>
                        <form action="/auth/logout" method="post" style="display:inline;">
                            <button type="submit" class="hidden md:inline-flex items-center justify-center px-4 py-2 text-xs font-bold rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition duration-300">

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - The Mandate Wire</title>
+    <link rel="icon" type="image/png" href="/tmwicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-slate-900 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-3xl font-extrabold tracking-tight text-white">
+                    <span class="text-blue-500">The</span> Mandate Wire
+                </a>
+                <nav class="flex space-x-6">
+                    <a href="/posts" class="text-gray-300 hover:text-blue-400 font-semibold">Home</a>
+                    <a href="/admin/users" class="text-red-400 font-semibold">User Management</a>
+                    <a href="/admin/audit-logs" class="text-orange-400 font-semibold">Audit Logs</a>
+                    <form action="/auth/logout" method="post" style="display:inline;">
+                        <button type="submit" class="text-gray-300 hover:text-blue-400 font-semibold">Logout</button>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">User Management</h1>
+
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900"><%= user.username %></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-500"><%= user.email %></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                    <% if (user.role === 'Admin') { %>bg-red-100 text-red-800<% } else if (user.role === 'Editor') { %>bg-yellow-100 text-yellow-800<% } else if (user.role === 'Contributor') { %>bg-green-100 text-green-800<% } else { %>bg-gray-100 text-gray-800<% } %>">
+                                    <%= user.role %>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <%= new Date(user.created_at).toLocaleDateString() %>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <% if (user.role === 'Reader') { %>
+                                    <form action="/admin/users/<%= user.user_id %>/verify" method="post" style="display:inline;">
+                                        <button type="submit" class="px-3 py-1 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 mr-2">
+                                            Verify & Grant Access
+                                        </button>
+                                    </form>
+                                <% } %>
+                                <form action="/admin/users/<%= user.user_id %>/role" method="post" style="display:inline;">
+                                    <select name="role" class="mr-2 px-2 py-1 border border-gray-300 rounded-md text-sm">
+                                        <option value="Reader" <%= user.role === 'Reader' ? 'selected' : '' %>>Reader</option>
+                                        <option value="Contributor" <%= user.role === 'Contributor' ? 'selected' : '' %>>Contributor</option>
+                                        <option value="Editor" <%= user.role === 'Editor' ? 'selected' : '' %>>Editor</option>
+                                        <option value="Admin" <%= user.role === 'Admin' ? 'selected' : '' %>>Admin</option>
+                                    </select>
+                                    <button type="submit" class="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+                                        Update Role
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
