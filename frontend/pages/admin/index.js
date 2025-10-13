@@ -9,6 +9,7 @@ export default function AdminPage() {
   const [success, setSuccess] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [postData, setPostData] = useState({
     title: '',
     slug: '',
@@ -30,9 +31,19 @@ export default function AdminPage() {
     }
   }
 
+  async function fetchPosts() {
+    try {
+      const { data } = await api.get('/posts');
+      setPosts(data);
+    } catch (e) {
+      console.error('Failed to fetch posts:', e);
+    }
+  }
+
   useEffect(() => {
     fetchCategories();
-  }, []);
+    if (isLoggedIn) fetchPosts();
+  }, [isLoggedIn]);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -69,6 +80,7 @@ export default function AdminPage() {
         author: 'Admin',
         image: ''
       });
+      fetchPosts(); // Refresh posts list
     } catch (e) {
       setPostError('Failed to create post');
     } finally {
@@ -76,10 +88,19 @@ export default function AdminPage() {
     }
   }
 
+  async function deletePost(id) {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+    try {
+      await api.delete(`/posts/${id}`);
+      fetchPosts(); // Refresh posts list
+    } catch (e) {
+      console.error('Failed to delete post:', e);
+    }
+  }
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Admin Panel</h1>
-      <p>isLoggedIn: {isLoggedIn ? 'true' : 'false'}</p>
 
       {!isLoggedIn ? (
         <>
@@ -167,6 +188,24 @@ export default function AdminPage() {
           </form>
           {postError && <div className="text-red-600 mt-3">{postError}</div>}
           {postSuccess && <div className="text-green-600 mt-3">{postSuccess}</div>}
+
+          <h3 className="text-lg font-medium mt-8 mb-4">Existing Posts</h3>
+          <div className="space-y-2">
+            {posts.map(post => (
+              <div key={post.id} className="border rounded p-3 flex justify-between items-center">
+                <div>
+                  <h4 className="font-medium">{post.title}</h4>
+                  <p className="text-sm text-gray-600">Slug: {post.slug} | Category: {post.categoryId.name}</p>
+                </div>
+                <button
+                  onClick={() => deletePost(post.id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
         </>
       )}
     </div>
