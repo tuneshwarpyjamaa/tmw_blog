@@ -15,6 +15,7 @@ yarn-error.log*
 # Build directories
 dist/
 build/
+.next/
 
 # OS generated files
 .DS_Store

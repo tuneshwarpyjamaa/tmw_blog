@@ -1,0 +1,24 @@
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api',
+  withCredentials: true
+});
+
+export function setAuthToken(token) {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    if (typeof window !== 'undefined') localStorage.setItem('tmw_token', token);
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+    if (typeof window !== 'undefined') localStorage.removeItem('tmw_token');
+  }
+}
+
+// Initialize from localStorage on the client
+if (typeof window !== 'undefined') {
+  const saved = localStorage.getItem('tmw_token');
+  if (saved) setAuthToken(saved);
+}
+
+export default api;
