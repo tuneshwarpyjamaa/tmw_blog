@@ -44,4 +44,8 @@ app.use((err, _req, res, _next) => {
 });
 
 // Start
-app.listen(PORT, () => console.log(`API listening on http://localhost:${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`API listening on http://localhost:${PORT}`));
+}
+
+export default app;
