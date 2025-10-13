@@ -34,7 +34,7 @@ router.post('/register', authLimiter, [
     const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
-        await pool.query('INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4)', [username, email, hashedPassword, 'Reader']);
+        await pool.query('INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3)', [username, email, hashedPassword]);
         res.redirect('/auth/login');
     } catch (err) {
         console.error('Registration error:', err);
