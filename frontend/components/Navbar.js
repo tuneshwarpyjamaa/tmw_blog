@@ -1,9 +1,12 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import BBCLogo from './ui/BBCLogo';
 import MenuIcon from './ui/MenuIcon';
 import SearchIcon from './ui/SearchIcon';
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Technology', href: '/category/technology' },
@@ -12,8 +15,7 @@ export default function Navbar() {
   ];
 
   const handleMenuClick = () => {
-    console.log('Menu icon clicked');
-    // Future implementation for menu functionality
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const handleSearchClick = () => {
@@ -27,10 +29,10 @@ export default function Navbar() {
         {/* Top bar */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center gap-4">
-            <button className="focus:outline-none" onClick={handleMenuClick}>
+            <button className="focus:outline-none md:hidden" onClick={handleMenuClick}>
               <MenuIcon />
             </button>
-            <button className="focus:outline-none" onClick={handleSearchClick}>
+            <button className="focus:outline-none hidden md:block" onClick={handleSearchClick}>
               <SearchIcon />
             </button>
           </div>
@@ -38,14 +40,14 @@ export default function Navbar() {
           <BBCLogo />
 
           <div className="flex items-center gap-4">
-            <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold">Register</Link>
+            <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden sm:block">Register</Link>
             <Link href="/login" className="px-4 py-2 text-sm font-bold border border-gray-400">Sign In</Link>
           </div>
         </div>
       </div>
 
-      {/* Bottom navigation bar */}
-      <div className="border-t border-gray-300">
+      {/* Bottom navigation bar (Desktop) */}
+      <div className="border-t border-gray-300 hidden md:block">
           <div className="container mx-auto px-4">
               <nav className="flex items-center justify-center gap-6 text-sm font-bold py-3">
                   {navLinks.map(link => (
@@ -54,6 +56,19 @@ export default function Navbar() {
               </nav>
           </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="border-t border-gray-300 md:hidden">
+          <div className="container mx-auto px-4 py-4">
+            <nav className="flex flex-col gap-4 text-sm font-bold">
+              {navLinks.map(link => (
+                <Link key={link.name} href={link.href} className="hover:underline py-2 border-b border-gray-200">{link.name}</Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
