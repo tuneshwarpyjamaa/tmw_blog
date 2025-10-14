@@ -1,8 +1,14 @@
 import { Post } from '../models/Post.js';
 import { Category } from '../models/Category.js';
 
-export async function listPosts(_req, res) {
-  const posts = await Post.findAll();
+export async function listPosts(req, res) {
+  const { q } = req.query;
+  let posts;
+  if (q) {
+    posts = await Post.search(q);
+  } else {
+    posts = await Post.findAll();
+  }
   // Normalize to match previous shape (categoryId -> category)
   const normalized = posts.map((p) => ({
     ...p,

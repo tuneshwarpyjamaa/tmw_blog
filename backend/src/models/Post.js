@@ -57,4 +57,15 @@ export class Post {
     const query = 'DELETE FROM posts WHERE id = $1';
     return await db.none(query, [id]);
   }
+
+  static async search(query) {
+    const searchQuery = `
+      SELECT p.*, c.name as category_name, c.slug as category_slug
+      FROM posts p
+      LEFT JOIN categories c ON p."categoryId" = c.id
+      WHERE p.title ILIKE $1 OR p.content ILIKE $1
+      ORDER BY p."createdAt" DESC
+    `;
+    return await db.many(searchQuery, [`%${query}%`]);
+  }
 }
