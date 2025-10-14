@@ -47,7 +47,7 @@ export default function Navbar() {
       {/* Bottom navigation bar */}
       <div className="border-t border-gray-300">
           <div className="container mx-auto px-4">
-              <nav className="flex items-center gap-6 text-sm font-bold py-3">
+              <nav className="flex items-center justify-center gap-6 text-sm font-bold py-3">
                   {navLinks.map(link => (
                       <Link key={link.name} href={link.href} className="hover:underline">{link.name}</Link>
                   ))}
