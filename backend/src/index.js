@@ -11,7 +11,10 @@ import categoryRoutes from './routes/category.routes.js';
 dotenv.config();
 
 // Connect to database
-connectDB(process.env.DATABASE_URL);
+connectDB(process.env.DATABASE_URL).catch(err => {
+  console.error('Database connection failed. Exiting.', err);
+  process.exit(1);
+});
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000; // Prefer 4000 to avoid Next.js dev port conflict
