@@ -22,8 +22,13 @@ async function run() {
 
     const categoriesData = [
       { name: 'News', slug: 'news' },
-      { name: 'Technology', slug: 'technology' },
-      { name: 'Sports', slug: 'sports' }
+      { name: 'Sport', slug: 'sport' },
+      { name: 'Business', slug: 'business' },
+      { name: 'Innovation', slug: 'innovation' },
+      { name: 'Culture', slug: 'culture' },
+      { name: 'Arts', slug: 'arts' },
+      { name: 'Travel', slug: 'travel' },
+      { name: 'Earth', slug: 'earth' }
     ];
 
     for (const cat of categoriesData) {
