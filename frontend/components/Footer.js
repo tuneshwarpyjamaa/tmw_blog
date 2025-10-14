@@ -50,9 +50,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="text-sm text-gray-700 pt-6 border-t border-gray-300 mt-6">
+        <div className="text-sm text-gray-700 pt-6 border-t border-gray-300 mt-6 text-center">
           <p>Copyright {new Date().getFullYear()} The Mandate Wire. All rights reserved.</p>
-          <p>Delivering the latest news and analysis with integrity and depth.</p>
+          <p>Delivering the latest news and analysis with depth.</p>
         </div>
       </div>
     </footer>
