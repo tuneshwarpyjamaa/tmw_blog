@@ -98,115 +98,90 @@ export default function AdminPage() {
     }
   }
 
+  const inputStyles = "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black";
+  const buttonStyles = "bg-black text-white px-4 py-2 rounded disabled:opacity-50 hover:bg-gray-800";
+  const labelStyles = "block text-sm font-bold mb-1";
+
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">Admin Panel</h1>
+    <div className="max-w-4xl mx-auto p-4">
+      <h1 className="text-3xl font-bold border-b pb-4 mb-8">Admin Panel</h1>
 
       {!isLoggedIn ? (
-        <>
-          <h2 className="text-xl font-medium mb-4">Login</h2>
-          <form onSubmit={onSubmit} className="space-y-3 mb-8">
+        <div className="max-w-sm mx-auto">
+          <h2 className="text-2xl font-bold mb-6">Login</h2>
+          <form onSubmit={onSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm mb-1">Email</label>
-              <input className="w-full border rounded px-3 py-2" value={email} onChange={(e)=>setEmail(e.target.value)} />
+              <label className={labelStyles}>Email</label>
+              <input className={inputStyles} value={email} onChange={(e)=>setEmail(e.target.value)} />
             </div>
             <div>
-              <label className="block text-sm mb-1">Password</label>
-              <input type="password" className="w-full border rounded px-3 py-2" value={password} onChange={(e)=>setPassword(e.target.value)} />
+              <label className={labelStyles}>Password</label>
+              <input type="password" className={inputStyles} value={password} onChange={(e)=>setPassword(e.target.value)} />
             </div>
-            <button disabled={loading} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">
+            <button disabled={loading} className={buttonStyles}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-          {error && <div className="text-red-600 mt-3">{error}</div>}
-          {success && <div className="text-green-600 mt-3">{success}</div>}
-        </>
+          {error && <div className="text-red-600 mt-4">{error}</div>}
+          {success && <div className="text-green-800 mt-4">{success}</div>}
+        </div>
       ) : (
-        <>
-          <h2 className="text-xl font-medium mb-4">Create New Post</h2>
-          <form onSubmit={onPostSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm mb-1">Title</label>
-              <input
-                className="w-full border rounded px-3 py-2"
-                value={postData.title}
-                onChange={(e)=>setPostData({...postData, title: e.target.value})}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Slug</label>
-              <input
-                className="w-full border rounded px-3 py-2"
-                value={postData.slug}
-                onChange={(e)=>setPostData({...postData, slug: e.target.value})}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Content</label>
-              <textarea
-                className="w-full border rounded px-3 py-2 h-32"
-                value={postData.content}
-                onChange={(e)=>setPostData({...postData, content: e.target.value})}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Category</label>
-              <select
-                className="w-full border rounded px-3 py-2"
-                value={postData.categorySlug}
-                onChange={(e)=>setPostData({...postData, categorySlug: e.target.value})}
-                required
-              >
-                <option value="">Select a category</option>
-                {categories.map(cat => (
-                  <option key={cat.id} value={cat.slug}>{cat.name}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Author</label>
-              <input
-                className="w-full border rounded px-3 py-2"
-                value={postData.author}
-                onChange={(e)=>setPostData({...postData, author: e.target.value})}
-              />
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Image URL (optional)</label>
-              <input
-                className="w-full border rounded px-3 py-2"
-                value={postData.image}
-                onChange={(e)=>setPostData({...postData, image: e.target.value})}
-              />
-            </div>
-            <button disabled={postLoading} className="bg-black text-white px-4 py-2 rounded disabled:opacity-50">
-              {postLoading ? 'Creating...' : 'Create Post'}
-            </button>
-          </form>
-          {postError && <div className="text-red-600 mt-3">{postError}</div>}
-          {postSuccess && <div className="text-green-600 mt-3">{postSuccess}</div>}
-
-          <h3 className="text-lg font-medium mt-8 mb-4">Existing Posts</h3>
-          <div className="space-y-2">
-            {posts.map(post => (
-              <div key={post.id} className="border rounded p-3 flex justify-between items-center">
-                <div>
-                  <h4 className="font-medium">{post.title}</h4>
-                  <p className="text-sm text-gray-600">Slug: {post.slug} | Category: {post.categoryId.name}</p>
-                </div>
-                <button
-                  onClick={() => deletePost(post.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
-                >
-                  Delete
-                </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div>
+            <h2 className="text-2xl font-bold mb-6">Create New Post</h2>
+            <form onSubmit={onPostSubmit} className="space-y-4">
+              <div>
+                <label className={labelStyles}>Title</label>
+                <input className={inputStyles} value={postData.title} onChange={(e)=>setPostData({...postData, title: e.target.value})} required />
               </div>
-            ))}
+              <div>
+                <label className={labelStyles}>Slug</label>
+                <input className={inputStyles} value={postData.slug} onChange={(e)=>setPostData({...postData, slug: e.target.value})} required />
+              </div>
+              <div>
+                <label className={labelStyles}>Content</label>
+                <textarea className={`${inputStyles} h-40`} value={postData.content} onChange={(e)=>setPostData({...postData, content: e.target.value})} required />
+              </div>
+              <div>
+                <label className={labelStyles}>Category</label>
+                <select className={inputStyles} value={postData.categorySlug} onChange={(e)=>setPostData({...postData, categorySlug: e.target.value})} required>
+                  <option value="">Select a category</option>
+                  {categories.map(cat => (<option key={cat.id} value={cat.slug}>{cat.name}</option>))}
+                </select>
+              </div>
+              <div>
+                <label className={labelStyles}>Author</label>
+                <input className={inputStyles} value={postData.author} onChange={(e)=>setPostData({...postData, author: e.target.value})} />
+              </div>
+              <div>
+                <label className={labelStyles}>Image URL (optional)</label>
+                <input className={inputStyles} value={postData.image} onChange={(e)=>setPostData({...postData, image: e.target.value})} />
+              </div>
+              <button disabled={postLoading} className={buttonStyles}>
+                {postLoading ? 'Creating...' : 'Create Post'}
+              </button>
+            </form>
+            {postError && <div className="text-red-600 mt-4">{postError}</div>}
+            {postSuccess && <div className="text-green-800 mt-4">{postSuccess}</div>}
           </div>
-        </>
+
+          <div>
+            <h2 className="text-2xl font-bold mb-6">Existing Posts</h2>
+            <div className="space-y-4">
+              {posts.map(post => (
+                <div key={post.id} className="border border-gray-200 rounded p-4 flex justify-between items-center">
+                  <div>
+                    <h3 className="font-bold text-lg">{post.title}</h3>
+                    <p className="text-sm text-gray-600">Slug: {post.slug} | Category: {post.categoryId.name}</p>
+                  </div>
+                  <button onClick={() => deletePost(post.id)} className="bg-red-600 text-white px-3 py-1 rounded text-sm font-medium hover:bg-red-700">
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
