@@ -3,15 +3,16 @@ import { useState } from 'react';
 import BBCLogo from './ui/BBCLogo';
 import MenuIcon from './ui/MenuIcon';
 import SearchIcon from './ui/SearchIcon';
+import UserIcon from './ui/UserIcon';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Technology', href: '/category/technology' },
     { name: 'News', href: '/category/news' },
-    { name: 'Admin', href: '/admin' },
   ];
 
   const handleMenuClick = () => {
@@ -21,6 +22,10 @@ export default function Navbar() {
   const handleSearchClick = () => {
     console.log('Search icon clicked');
     // Future implementation for search functionality
+  };
+
+  const handleUserIconClick = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
   };
 
   return (
@@ -39,9 +44,18 @@ export default function Navbar() {
 
           <BBCLogo />
 
-          <div className="flex items-center gap-4">
-            <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden sm:block">Register</Link>
-            <Link href="/login" className="px-4 py-2 text-sm font-bold border border-gray-400">Sign In</Link>
+          <div className="flex items-center gap-4 relative">
+            <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden md:block">Register</Link>
+            <Link href="/login" className="px-4 py-2 text-sm font-bold border border-gray-400 hidden md:block">Sign In</Link>
+            <button className="focus:outline-none md:hidden" onClick={handleUserIconClick}>
+              <UserIcon />
+            </button>
+            {isUserMenuOpen && (
+              <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10 md:hidden">
+                <Link href="/register" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Register</Link>
+                <Link href="/login" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Sign In</Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
