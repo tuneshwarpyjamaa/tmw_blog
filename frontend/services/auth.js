@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api';
+const API_URL = 'http://localhost:4000/api';
 
 async function request(endpoint, options = {}) {
   const url = `${API_URL}${endpoint}`;
