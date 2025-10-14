@@ -8,7 +8,7 @@ const PostImage = ({ src, alt, width, height, className, variant }) => {
 };
 
 export default function PostCard({ post, variant = 'default' }) {
-  const { title, slug, content, categoryId, createdAt, image } = post;
+  const { title, slug, content, category_name, category_slug, createdAt, image } = post;
   const date = new Date(createdAt || Date.now()).toLocaleDateString();
   const summary = (content || '').slice(0, 160) + '...';
 
@@ -16,11 +16,11 @@ export default function PostCard({ post, variant = 'default' }) {
     <>
       <span className="mx-2 text-gray-400">•</span>
       <Link
-        href={`/category/${categoryId.slug}`}
+        href={`/category/${category_slug}`}
         onClick={(e) => e.stopPropagation()}
         className="text-blue-600 hover:text-blue-800 font-medium"
       >
-        {categoryId.name}
+        {category_name}
       </Link>
     </>
   );
@@ -35,7 +35,7 @@ export default function PostCard({ post, variant = 'default' }) {
             <p className="text-gray-700 mb-4 text-lg leading-relaxed">{summary}</p>
             <div className="text-sm text-gray-500 font-medium">
               <span>{date}</span>
-              {categoryId?.name && <CategoryLink />}
+              {category_name && <CategoryLink />}
             </div>
           </article>
         );
@@ -48,7 +48,7 @@ export default function PostCard({ post, variant = 'default' }) {
             <p className="text-xl text-gray-800 mb-6 leading-relaxed">{summary}</p>
             <div className="text-sm text-gray-500 font-medium">
               <span>{date}</span>
-              {categoryId?.name && <CategoryLink />}
+              {category_name && <CategoryLink />}
             </div>
           </article>
         );
@@ -60,7 +60,7 @@ export default function PostCard({ post, variant = 'default' }) {
             <h3 className="text-2xl font-bold mb-3 text-gray-900 leading-tight group-hover:text-blue-700 transition-colors">{title}</h3>
             <div className="text-xs text-gray-500 font-medium">
               <span>{date}</span>
-              {categoryId?.name && <CategoryLink />}
+              {category_name && <CategoryLink />}
             </div>
           </article>
         );
@@ -72,7 +72,7 @@ export default function PostCard({ post, variant = 'default' }) {
             <p className="text-sm text-gray-700 mt-2 leading-relaxed line-clamp-2">{summary}</p>
             <div className="text-xs text-gray-500 mt-3 font-medium">
               <span>{date}</span>
-              {categoryId?.name && <CategoryLink />}
+              {category_name && <CategoryLink />}
             </div>
           </article>
         );
@@ -83,7 +83,7 @@ export default function PostCard({ post, variant = 'default' }) {
             <PostImage src={image} alt={title} width={640} height={360} className="w-full mb-4" />
             <div className="text-sm text-gray-500 mb-3 font-medium">
               <span>{date}</span>
-              {categoryId?.name && <CategoryLink />}
+              {category_name && <CategoryLink />}
             </div>
             <h3 className="text-2xl font-bold mb-3 text-gray-900 leading-tight group-hover:text-blue-700 transition-colors">{post.title}</h3>
             <p className="text-gray-600 leading-relaxed line-clamp-3">{summary}</p>
