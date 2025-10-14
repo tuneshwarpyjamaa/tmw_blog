@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import api from '@/services/api';
+import Link from 'next/link';
 
 export default function PostPage() {
   const router = useRouter();
@@ -28,21 +29,23 @@ export default function PostPage() {
   if (!post) return null;
 
   return (
-    <article className="prose max-w-none">
-      <h1>{post.title}</h1>
-      <div className="text-sm text-gray-500 mb-4">
+    <article className="max-w-4xl mx-auto">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
+      <div className="text-sm text-gray-600 mb-8 border-b pb-4">
         <span>{new Date(post.createdAt).toLocaleString()}</span>
         {post.categoryId?.name && (
           <>
             <span className="mx-2">•</span>
-            <span>{post.categoryId.name}</span>
+            <Link href={`/category/${post.categoryId.slug}`} className="hover:underline">
+              {post.categoryId.name}
+            </Link>
           </>
         )}
       </div>
       {post.image && (
-        <img src={post.image} alt={post.title} className="rounded mb-4 max-h-96 object-cover w-full" />
+        <img src={post.image} alt={post.title} className="rounded mb-8 w-full" />
       )}
-      <div className="whitespace-pre-wrap leading-7">{post.content}</div>
+      <div className="prose max-w-none text-lg leading-8">{post.content}</div>
     </article>
   );
 }

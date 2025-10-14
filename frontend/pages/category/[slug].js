@@ -27,16 +27,22 @@ export default function CategoryPage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-600">{error}</div>;
 
+  const featuredPost = data.posts[0];
+  const otherPosts = data.posts.slice(1);
+
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-4">{data.category?.name}</h1>
+      <h1 className="text-3xl font-bold border-b pb-4 mb-8">{data.category?.name}</h1>
       {data.posts.length === 0 ? (
         <div>No posts yet.</div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.posts.map((p) => (
-            <PostCard key={p._id} post={p} />
-          ))}
+        <div className="space-y-8">
+          {featuredPost && <PostCard post={featuredPost} variant="featured" />}
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {otherPosts.map((p) => (
+              <PostCard key={p._id} post={p} />
+            ))}
+          </div>
         </div>
       )}
     </div>
