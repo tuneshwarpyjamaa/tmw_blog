@@ -1,17 +1,28 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { register } from '../services/auth';
 
 export default function RegisterPage() {
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Sign up attempt with:', { name, email, password });
-    // Placeholder for actual sign-up logic
+    setError('');
+    setLoading(true);
+    try {
+      await register(email, password);
+      window.alert('Sign up successful! Please sign in.');
+      router.push('/login');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputStyles = "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black";
@@ -22,16 +33,6 @@ export default function RegisterPage() {
     <div className="max-w-md mx-auto mt-12">
       <h1 className="text-3xl font-bold text-center mb-8">Create an Account</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className={labelStyles}>Full Name</label>
-          <input
-            type="text"
-            className={inputStyles}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
         <div>
           <label className={labelStyles}>Email Address</label>
           <input

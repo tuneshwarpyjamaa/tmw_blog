@@ -7,7 +7,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [postData, setPostData] = useState({
@@ -42,8 +42,8 @@ export default function AdminPage() {
 
   useEffect(() => {
     fetchCategories();
-    if (isLoggedIn) fetchPosts();
-  }, [isLoggedIn]);
+    fetchPosts();
+  }, []);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -105,28 +105,7 @@ export default function AdminPage() {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-3xl font-bold border-b pb-4 mb-8">Admin Panel</h1>
-
-      {!isLoggedIn ? (
-        <div className="max-w-sm mx-auto">
-          <h2 className="text-2xl font-bold mb-6">Login</h2>
-          <form onSubmit={onSubmit} className="space-y-4">
-            <div>
-              <label className={labelStyles}>Email</label>
-              <input className={inputStyles} value={email} onChange={(e)=>setEmail(e.target.value)} />
-            </div>
-            <div>
-              <label className={labelStyles}>Password</label>
-              <input type="password" className={inputStyles} value={password} onChange={(e)=>setPassword(e.target.value)} />
-            </div>
-            <button disabled={loading} className={buttonStyles}>
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </form>
-          {error && <div className="text-red-600 mt-4">{error}</div>}
-          {success && <div className="text-green-800 mt-4">{success}</div>}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
             <h2 className="text-2xl font-bold mb-6">Create New Post</h2>
             <form onSubmit={onPostSubmit} className="space-y-4">
@@ -181,8 +160,7 @@ export default function AdminPage() {
               ))}
             </div>
           </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
