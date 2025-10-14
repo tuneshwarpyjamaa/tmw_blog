@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import BBCLogo from './ui/BBCLogo';
 import MenuIcon from './ui/MenuIcon';
 import UserIcon from './ui/UserIcon';
 
@@ -65,7 +64,9 @@ export default function Navbar() {
             </form>
           </div>
 
-          <BBCLogo />
+          <Link href="/" className="text-3xl font-serif font-bold text-black uppercase tracking-wider hover:text-gray-800 transition-colors">
+            The Mandate Wire
+          </Link>
 
           <div className="flex items-center gap-4 relative">
             <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden md:block">Register</Link>
