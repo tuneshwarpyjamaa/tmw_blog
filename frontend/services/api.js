@@ -21,4 +21,8 @@ if (typeof window !== 'undefined') {
   if (saved) setAuthToken(saved);
 }
 
+export function searchPosts(query) {
+  return api.get('/posts', { params: { q: query } });
+}
+
 export default api;
