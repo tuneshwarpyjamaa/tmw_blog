@@ -22,6 +22,10 @@ module.exports = {
           900: '#1a2027',
         },
       },
+      fontFamily: {
+        serif: ['Merriweather', 'serif'],
+        sans: ['Lato', 'sans-serif'],
+      },
     }
   },
   plugins: []
