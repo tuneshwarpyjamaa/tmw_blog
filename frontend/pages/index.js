@@ -3,37 +3,34 @@ import api from '@/services/api';
 import PostCard from '@/components/PostCard';
 
 const FullLayout = ({ posts }) => {
-  const featuredPost = posts[0];
-  const mainStory = posts[1];
-  const sideStories = posts.slice(2, 4);
-  const rightColumnStories = posts.slice(4);
+  const mainStories = posts.slice(0, 5); // For the left column
+  const highValueStories = posts.slice(5, 7); // For the middle column
+  const utilityStories = posts.slice(7); // For the right column
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-      {/* Left and Middle Columns */}
-      <div className="md:col-span-3">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Left Column (Featured Post and 2 side stories) */}
-          <div className="md:col-span-1">
-            {featuredPost && <PostCard post={featuredPost} variant="featured" />}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-8 mt-8">
-              {sideStories.map(post => (
-                <PostCard key={post._id} post={post} variant="side" />
-              ))}
-            </div>
-          </div>
-
-          {/* Middle Column (Main Story) */}
-          <div className="md:col-span-1">
-            {mainStory && <PostCard post={mainStory} variant="main" />}
-          </div>
+    <div className="grid grid-cols-12 gap-8">
+      {/* Column 1 (Main/Left) Feature Well */}
+      <div className="col-span-12 md:col-span-5">
+        <div className="space-y-8">
+          {mainStories.map((post, index) => (
+            <PostCard key={post._id} post={post} variant={index === 0 ? 'featured' : 'side'} />
+          ))}
         </div>
       </div>
 
-      {/* Right Column */}
-      <div className="md:col-span-1 border-l border-gray-300 pl-8">
+      {/* Column 2 (Middle/Mixed) High-Value Modules */}
+      <div className="col-span-12 md:col-span-4">
+        <div className="space-y-8">
+          {highValueStories.map(post => (
+            <PostCard key={post._id} post={post} variant="main" />
+          ))}
+        </div>
+      </div>
+
+      {/* Column 3 (Side Rail/Right) Utility & Engagement */}
+      <div className="col-span-12 md:col-span-3 border-l border-gray-300 pl-8">
         <div className="space-y-6">
-          {rightColumnStories.map(post => (
+          {utilityStories.map(post => (
             <PostCard key={post._id} post={post} variant="list" />
           ))}
         </div>
