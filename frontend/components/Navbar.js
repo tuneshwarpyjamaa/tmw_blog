@@ -1,12 +1,58 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import MenuIcon from './ui/MenuIcon';
 import UserIcon from './ui/UserIcon';
+import { getUserRole } from '../services/api';
 
 export default function Navbar() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+
+  const checkAuthStatus = () => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('tmw_token');
+      const role = getUserRole();
+      setIsAuthenticated(!!token);
+      setUserRole(role);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+    // Listen for route changes to re-check auth status
+    const handleRouteChange = () => {
+      checkAuthStatus();
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    // Close dropdown when clicking outside
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.user-menu-container')) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [router.events]);
+
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('tmw_token');
+      localStorage.removeItem('user_role');
+      setIsAuthenticated(false);
+      setUserRole(null);
+      window.location.href = '/';
+    }
+  };
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -68,17 +114,42 @@ export default function Navbar() {
             The Mandate Wire
           </Link>
 
-          <div className="flex items-center gap-4 relative">
-            <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden md:block">Register</Link>
-            <Link href="/login" className="px-4 py-2 text-sm font-bold border border-gray-400 hidden md:block">Sign In</Link>
-            <button className="focus:outline-none md:hidden" onClick={handleUserIconClick}>
-              <UserIcon />
-            </button>
-            {isUserMenuOpen && (
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10 md:hidden">
-                <Link href="/register" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Register</Link>
-                <Link href="/login" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Sign In</Link>
-              </div>
+          <div className="flex items-center gap-4 relative user-menu-container">
+            {isAuthenticated ? (
+              <>
+                <div className="mr-8">
+                  <button className="focus:outline-none" onClick={handleUserIconClick}>
+                    <UserIcon />
+                  </button>
+                  {isUserMenuOpen && (
+                    <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                      <Link href="/admin" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">
+                        Post
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <Link href="/register" className="bg-black text-white px-4 py-2 text-sm font-bold hidden md:block">Register</Link>
+                <Link href="/login" className="px-4 py-2 text-sm font-bold border border-gray-400 hidden md:block">Sign In</Link>
+                <button className="focus:outline-none md:hidden" onClick={handleUserIconClick}>
+                  <UserIcon />
+                </button>
+                {isUserMenuOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10 md:hidden">
+                    <Link href="/register" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Register</Link>
+                    <Link href="/login" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">Sign In</Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

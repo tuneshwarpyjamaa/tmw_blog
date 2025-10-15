@@ -18,6 +18,9 @@ export default function LoginPage() {
     try {
       const { token, user } = await login(email, password);
       setAuthToken(token);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('user_role', user.role);
+      }
       console.log('Login successful:', { token, user });
       window.alert('Sign in successful!');
       if (user.role === 'admin') {
