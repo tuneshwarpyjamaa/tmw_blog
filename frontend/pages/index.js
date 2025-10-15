@@ -42,13 +42,15 @@ const FullLayout = ({ posts }) => {
   );
 };
 
-const SimpleLayout = ({ posts }) => (
-  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-    {posts.map((p) => (
-      <PostCard key={p._id} post={p} />
-    ))}
-  </div>
-);
+const SimpleLayout = ({ posts }) => {
+  return (
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((p) => (
+        <PostCard key={p._id} post={p} />
+      ))}
+    </div>
+  );
+};
 
 
 export default function HomePage() {
