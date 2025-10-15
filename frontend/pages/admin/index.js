@@ -99,7 +99,7 @@ export default function AdminPage() {
   }
 
   const inputStyles = "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500";
-  const buttonStyles = "bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50 hover:bg-blue-700 transition-colors";
+  const buttonStyles = "bg-black text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50 hover:bg-gray-800 transition-colors";
   const labelStyles = "block text-sm font-semibold mb-1 text-gray-700";
 
   return (
