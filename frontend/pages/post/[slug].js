@@ -14,7 +14,7 @@ export default function PostPage() {
     if (!slug) return;
     (async () => {
       try {
-        const { data } = await api.get(`/posts/${slug}`);
+        const { data } = await api.get(`/posts/${encodeURIComponent(slug)}`);
         setPost(data);
       } catch (e) {
         setError('Post not found');
@@ -32,7 +32,7 @@ export default function PostPage() {
     <article className="max-w-4xl mx-auto">
       <h1 className="text-4xl md:text-5xl font-bold mb-4">{post.title}</h1>
       <div className="text-sm text-gray-600 mb-8 border-b pb-4">
-        <span>{new Date(post.createdAt).toLocaleString()}</span>
+        <span>{new Date(post.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</span>
         {post.categoryId?.name && (
           <>
             <span className="mx-2">•</span>
@@ -45,7 +45,7 @@ export default function PostPage() {
       {post.image && (
         <img src={post.image} alt={post.title} className="rounded mb-8 w-full" />
       )}
-      <div className="prose max-w-none text-lg leading-8">{post.content}</div>
+      <div className="prose max-w-none text-lg leading-8 text-justify">{post.content}</div>
     </article>
   );
 }

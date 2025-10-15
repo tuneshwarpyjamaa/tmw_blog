@@ -21,6 +21,13 @@ if (typeof window !== 'undefined') {
   if (saved) setAuthToken(saved);
 }
 
+export function getUserRole() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('user_role');
+  }
+  return null;
+}
+
 export function searchPosts(query) {
   return api.get('/posts', { params: { q: query } });
 }
