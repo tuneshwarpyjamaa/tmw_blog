@@ -31,6 +31,16 @@ export class Post {
     return await db.one(query, [slug]);
   }
 
+  static async findById(id) {
+    const query = `
+      SELECT p.*, c.name as category_name, c.slug as category_slug
+      FROM posts p
+      LEFT JOIN categories c ON p."categoryId" = c.id
+      WHERE p.id = $1
+    `;
+    return await db.one(query, [id]);
+  }
+
   static async findByCategory(categoryId) {
     const query = `
       SELECT p.*, c.name as category_name, c.slug as category_slug

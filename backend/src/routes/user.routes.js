@@ -1,11 +1,12 @@
 import { Router } from 'express';
-import { getAllUsers, updateUserRole } from '../controllers/user.controller.js';
+import { getAllUsers, updateUserRole, deleteUser } from '../controllers/user.controller.js';
 import { requireAuth } from '../middleware/auth.js';
-import { checkRole } from '../middleware/rbac.js';
+import { authorize } from '../middleware/rbac.js';
 
 const router = Router();
 
-router.get('/', requireAuth, checkRole('admin'), getAllUsers);
-router.put('/:id/role', requireAuth, checkRole('admin'), updateUserRole);
+router.get('/', requireAuth, authorize('manageUsers'), getAllUsers);
+router.put('/:id/role', requireAuth, authorize('manageUsers'), updateUserRole);
+router.delete('/:id', requireAuth, authorize('manageUsers'), deleteUser);
 
 export default router;

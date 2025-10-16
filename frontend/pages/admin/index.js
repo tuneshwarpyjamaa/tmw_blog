@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
-import api, { setAuthToken } from '@/services/api';
+import { useRouter } from 'next/router';
+import api, { setAuthToken, getUserRole } from '@/services/api';
 
 export default function AdminPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState('admin@example.com');
   const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [categories, setCategories] = useState([]);
   const [posts, setPosts] = useState([]);
   const [postData, setPostData] = useState({
@@ -21,6 +26,17 @@ export default function AdminPage() {
   const [postLoading, setPostLoading] = useState(false);
   const [postError, setPostError] = useState('');
   const [postSuccess, setPostSuccess] = useState('');
+
+  useEffect(() => {
+    const role = getUserRole();
+    if (role && String(role).toLowerCase() === 'admin') {
+      setAuthorized(true);
+      setIsLoggedIn(true);
+    } else {
+      router.replace('/login');
+    }
+    setCheckingAuth(false);
+  }, [router]);
 
   async function fetchCategories() {
     try {
@@ -101,6 +117,26 @@ export default function AdminPage() {
   const inputStyles = "w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500";
   const buttonStyles = "bg-black text-white px-4 py-2 rounded text-sm font-medium disabled:opacity-50 hover:bg-gray-800 transition-colors";
   const labelStyles = "block text-sm font-semibold mb-1 text-gray-700";
+
+  if (checkingAuth) {
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="text-center py-12">
+          <p className="text-gray-600">Checking authorization...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!authorized) {
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <div className="text-center py-12">
+          <p className="text-red-600">Access denied. Admin privileges required.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4">

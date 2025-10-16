@@ -44,4 +44,9 @@ export class User {
     `;
     return await db.one(query, [id, role]);
   }
+  
+  static async delete(id) {
+    const query = 'DELETE FROM users WHERE id = $1';
+    return await db.none(query, [id]);
+  }
 }

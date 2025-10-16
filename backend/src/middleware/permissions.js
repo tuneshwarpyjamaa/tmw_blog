@@ -1,0 +1,38 @@
+export const permissions = {
+  admin: {
+    manageUsers: true,
+    managePosts: true,
+    manageCategories: true,
+    publishAnyPost: true,
+    editAnyPost: true,
+    editOwnPost: true,
+    readPublishedPosts: true,
+  },
+  editor: {
+    manageUsers: false,
+    managePosts: true,
+    manageCategories: true,
+    publishAnyPost: true,
+    editAnyPost: true,
+    editOwnPost: true,
+    readPublishedPosts: true,
+  },
+  contributor: {
+    manageUsers: false,
+    managePosts: true,
+    manageCategories: false,
+    publishAnyPost: false,
+    editAnyPost: false,
+    editOwnPost: true,
+    readPublishedPosts: true,
+  },
+  member: {
+    manageUsers: false,
+    managePosts: false,
+    manageCategories: false,
+    publishAnyPost: false,
+    editAnyPost: false,
+    editOwnPost: false,
+    readPublishedPosts: true,
+  },
+};

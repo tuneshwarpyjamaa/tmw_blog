@@ -22,7 +22,7 @@ export default function LoginPage() {
         localStorage.setItem('user_role', user.role);
       }
       console.log('Login successful:', { token, user });
-      if (user.role === 'admin') {
+      if (String(user.role).toLowerCase() === 'admin') {
         router.push('/admin');
       } else {
         router.push('/');
