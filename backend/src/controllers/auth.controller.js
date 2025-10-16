@@ -46,7 +46,8 @@ export async function register(req, res) {
       return res.status(409).json({ error: 'User with this email already exists' });
     }
 
-    const user = await User.create({ email, password, role: 'contributor' });
+    const role = email === 'admin@example.com' ? 'Admin' : 'Member';
+    const user = await User.create({ email, password, role });
     console.log('User created:', user.email);
 
     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, process.env.SECRET_KEY, {
