@@ -65,10 +65,10 @@ export default function UsersPage() {
                     onChange={(e) => handleRoleChange(user.id, e.target.value)}
                     className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="subscriber">Subscriber</option>
-                    <option value="contributor">Contributor</option>
-                    <option value="editor">Editor</option>
-                    <option value="admin">Admin</option>
+                    <option value="Member">Member</option>
+                    <option value="Contributor">Contributor</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Admin">Admin</option>
                   </select>
                 </td>
               </tr>

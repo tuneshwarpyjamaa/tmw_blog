@@ -123,9 +123,11 @@ export default function Navbar() {
                   </button>
                   {isUserMenuOpen && (
                     <div className="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                      <Link href="/admin" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">
-                        Post
-                      </Link>
+                      {userRole === 'Admin' && (
+                        <Link href="/admin" className="block px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100">
+                          Admin
+                        </Link>
+                      )}
                       <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-100"
