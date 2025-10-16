@@ -25,13 +25,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(morgan('dev'));
-app.use((req, res, next) => {
-    const token = req.cookies.token;
-    if (token) {
-      req.headers.authorization = `Bearer ${token}`;
-    }
-    next();
-  });
 
 // Routes
 app.use('/api/auth', authRoutes);
