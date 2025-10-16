@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '@/services/api';
+import api, { setAuthToken } from '@/services/api';
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -8,6 +8,10 @@ export default function UsersPage() {
 
   async function fetchUsers() {
     try {
+      const token = localStorage.getItem('tmw_token');
+      if (token) {
+        setAuthToken(token);
+      }
       const { data } = await api.get('/users');
       setUsers(data);
     } catch (e) {

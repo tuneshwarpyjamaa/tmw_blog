@@ -18,29 +18,9 @@ export default function AdminDashboard() {
           <p className={descriptionStyles}>View, edit, and manage user roles and permissions.</p>
         </Link>
 
-        <Link href="/admin/products" className={cardStyles}>
-          <h2 className={titleStyles}>Product Management</h2>
-          <p className={descriptionStyles}>Manage products, inventory, and categories.</p>
-        </Link>
-
-        <Link href="/admin/orders" className={cardStyles}>
-          <h2 className={titleStyles}>Order Management</h2>
-          <p className={descriptionStyles}>View and process customer orders.</p>
-        </Link>
-
-        <Link href="/admin/analytics" className={cardStyles}>
-          <h2 className={titleStyles}>Analytics</h2>
-          <p className={descriptionStyles}>View sales reports and business insights.</p>
-        </Link>
-
-        <Link href="/admin/settings" className={cardStyles}>
-          <h2 className={titleStyles}>Settings</h2>
-          <p className={descriptionStyles}>Configure application settings and preferences.</p>
-        </Link>
-
-        <Link href="/admin/content" className={cardStyles}>
-          <h2 className={titleStyles}>Content Management</h2>
-          <p className={descriptionStyles}>Manage website content and pages.</p>
+        <Link href="/admin/create-post" className={cardStyles}>
+          <h2 className={titleStyles}>Create Post</h2>
+          <p className={descriptionStyles}>Create a new article for the blog.</p>
         </Link>
       </div>
     </div>
