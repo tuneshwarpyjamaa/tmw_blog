@@ -7,6 +7,7 @@ import { connectDB } from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import postRoutes from './routes/post.routes.js';
 import categoryRoutes from './routes/category.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/categories', categoryRoutes);
 

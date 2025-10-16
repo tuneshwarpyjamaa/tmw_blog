@@ -105,9 +105,14 @@ export default function AdminPage() {
   return (
     <div className="max-w-6xl mx-auto p-4">
       {/* Header */}
-      <div className="border-b border-gray-200 pb-3 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
-        <p className="text-sm text-gray-600 mt-1">Manage posts and content</p>
+      <div className="border-b border-gray-200 pb-3 mb-6 flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
+          <p className="text-sm text-gray-600 mt-1">Manage posts and content</p>
+        </div>
+        <a href="/admin/users" className="bg-blue-500 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-600 transition-colors">
+          Manage Users
+        </a>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
