@@ -3,7 +3,7 @@ import { db } from '../lib/db.js';
 
 export class User {
   static async create(data) {
-    const { email, password, role = 'admin' } = data;
+    const { email, password, role = 'subscriber' } = data;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -28,5 +28,20 @@ export class User {
 
   static async comparePassword(candidate, hashed) {
     return bcrypt.compare(candidate, hashed);
+  }
+
+  static async findAll() {
+    const query = 'SELECT id, email, role, "createdAt", "updatedAt" FROM users ORDER BY "createdAt" DESC';
+    return await db.any(query);
+  }
+
+  static async updateRole(id, role) {
+    const query = `
+      UPDATE users
+      SET role = $2, "updatedAt" = NOW()
+      WHERE id = $1
+      RETURNING id, email, role, "updatedAt"
+    `;
+    return await db.one(query, [id, role]);
   }
 }
