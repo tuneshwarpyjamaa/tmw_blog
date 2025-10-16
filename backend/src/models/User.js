@@ -3,7 +3,7 @@ import { db } from '../lib/db.js';
 
 export class User {
   static async create(data) {
-    const { email, password, role = 'subscriber' } = data;
+    const { email, password, role = 'Member' } = data;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
