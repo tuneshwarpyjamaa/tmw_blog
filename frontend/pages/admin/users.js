@@ -31,9 +31,8 @@ export default function UsersPage() {
       setAuthorized(true);
       fetchUsers();
     } else {
-      setError('Unauthorized');
+      setAuthorized(false);
       setLoading(false);
-      router.replace('/login');
     }
     setCheckingAuth(false);
   }, []);

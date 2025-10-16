@@ -33,7 +33,7 @@ export default function AdminPage() {
       setAuthorized(true);
       setIsLoggedIn(true);
     } else {
-      router.replace('/login');
+      setAuthorized(false);
     }
     setCheckingAuth(false);
   }, [router]);
