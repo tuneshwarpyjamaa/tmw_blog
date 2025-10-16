@@ -22,7 +22,6 @@ export default function LoginPage() {
         localStorage.setItem('user_role', user.role);
       }
       console.log('Login successful:', { token, user });
-      window.alert('Sign in successful!');
       if (user.role === 'admin') {
         router.push('/admin');
       } else {
