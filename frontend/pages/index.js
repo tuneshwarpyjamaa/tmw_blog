@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import api from '@/services/api';
-import PostCard from '@/components/PostCard';
 import Link from 'next/link';
+import Head from 'next/head';
+
+// Lazy load PostCard component
+const PostCard = dynamic(() => import('@/components/PostCard'), {
+  loading: () => <div className="animate-pulse h-48 bg-gray-200 rounded"></div>
+});
 
 const FullLayout = ({ posts }) => {
   // Post distribution for news layout
@@ -47,9 +53,18 @@ const FullLayout = ({ posts }) => {
                 {heroPost ? (
                   <Link href={`/post/${encodeURIComponent(heroPost.slug)}`}>
                     <div className="w-full h-48 md:h-56 bg-gray-200 rounded-lg flex items-center justify-center cursor-pointer hover:opacity-95 transition-opacity overflow-hidden">
-                      <div className="text-gray-500 bg-gray-300 w-full h-full flex items-center justify-center">
-                        <span>Image: {heroPost.title}</span>
-                      </div>
+                      {heroPost.image ? (
+                        <img
+                          src={heroPost.image}
+                          alt={heroPost.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="text-gray-500 bg-gray-300 w-full h-full flex items-center justify-center">
+                          <span>No Image</span>
+                        </div>
+                      )}
                     </div>
                   </Link>
                 ) : (
@@ -153,6 +168,49 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  return (
+    <>
+      <Head>
+        <title>TMW Blog - Latest News and Stories</title>
+        <meta name="description" content="Discover the latest news, stories, and insights on TMW Blog. Your go-to source for engaging content across various categories." />
+        <meta name="keywords" content="news, blog, latest stories, TMW, articles" />
+        <link rel="canonical" href="https://yourdomain.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TMW Blog - Latest News and Stories" />
+        <meta property="og:description" content="Discover the latest news, stories, and insights on TMW Blog." />
+        <meta property="og:url" content="https://yourdomain.com" />
+        <meta property="og:image" content="https://yourdomain.com/og-image-home.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TMW Blog - Latest News and Stories" />
+        <meta name="twitter:description" content="Discover the latest news, stories, and insights on TMW Blog." />
+        <meta name="twitter:image" content="https://yourdomain.com/twitter-image-home.jpg" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "TMW Blog Homepage",
+              "url": "https://yourdomain.com",
+              "description": "Latest news and stories on TMW Blog",
+              "publisher": {
+                "@type": "Organization",
+                "name": "TMW Blog"
+              }
+            })
+          }}
+        />
+      </Head>
+      <HomeContent />
+    </>
+  );
+}
+
+function HomeContent() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
   useEffect(() => {
     (async () => {
       try {
@@ -192,5 +250,9 @@ export default function HomePage() {
   );
 
   // Use FullLayout when we have enough posts, otherwise SimpleLayout
-  return posts.length >= 7 ? <FullLayout posts={posts} /> : <SimpleLayout posts={posts} />;
+  return (
+    <Suspense fallback={<div className="animate-pulse"><div className="h-6 bg-gray-200 rounded w-1/4 mb-6"></div><div className="grid grid-cols-3 gap-6">{[...Array(6)].map((_, i) => (<div key={i} className="h-64 bg-gray-200 rounded"></div>))}</div></div>}>
+      {posts.length >= 7 ? <FullLayout posts={posts} /> : <SimpleLayout posts={posts} />}
+    </Suspense>
+  );
 }

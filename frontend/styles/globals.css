@@ -7,6 +7,34 @@ body {
   height: 100%;
   background-color: #ffffff;
   color: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* SEO and Performance Optimizations */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure proper text rendering for SEO */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Optimize for Core Web Vitals */
+* {
+  box-sizing: border-box;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 @layer utilities {
