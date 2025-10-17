@@ -70,12 +70,12 @@ const FullLayout = ({ posts }) => {
             <ul className="space-y-3">
               {latestNewsPosts.length > 0 ? (
                 latestNewsPosts.map((p, index) => (
-                  <li key={p._id} className={`pb-3 ${index < latestNewsPosts.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                  <li key={p.slug || index} className={`pb-3 ${index < latestNewsPosts.length - 1 ? 'border-b border-gray-100' : ''}`}>
                     <PostCard post={p} variant="compact" />
                   </li>
                 ))
               ) : (
-                <li className="text-gray-500 text-sm py-2">No latest news</li>
+                <li key="no-latest-news" className="text-gray-500 text-sm py-2">No latest news</li>
               )}
             </ul>
           </aside>
@@ -88,7 +88,7 @@ const FullLayout = ({ posts }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {featuredPosts.length > 0 ? (
             featuredPosts.slice(0, 6).map((p) => (
-              <PostCard key={p._id} post={p} variant="featured" />
+              <PostCard key={p.slug} post={p} variant="featured" />
             ))
           ) : (
             <div className="col-span-3 text-gray-500 text-center py-4">
@@ -106,7 +106,7 @@ const FullLayout = ({ posts }) => {
               <h2 className="text-xl font-bold text-gray-900 mb-4">More Stories</h2>
               <div className="grid gap-4">
                 {moreStoriesPosts.map((p) => (
-                  <PostCard key={p._id} post={p} variant="list" />
+                  <PostCard key={p.slug} post={p} variant="list" />
                 ))}
               </div>
             </div>
@@ -141,7 +141,7 @@ const SimpleLayout = ({ posts }) => {
       
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((p) => (
-          <PostCard key={p._id} post={p} />
+          <PostCard key={p.slug} post={p} />
         ))}
       </div>
     </div>
