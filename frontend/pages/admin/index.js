@@ -146,7 +146,7 @@ export default function AdminPage() {
           <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
           <p className="text-sm text-gray-600 mt-1">Manage posts and content</p>
         </div>
-        <a href="/admin/users" className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700 transition-colors">
+        <a href="/admin/users" className="bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition-colors">
           User Management
         </a>
       </div>
