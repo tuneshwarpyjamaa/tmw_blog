@@ -1,6 +1,55 @@
+import pdfParse from 'pdf-parse';
+import slugify from 'slugify';
 import { Post } from '../models/Post.js';
 import { Category } from '../models/Category.js';
 
+export async function createPostFromPdf(req, res) {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const { categorySlug } = req.body;
+    if (!categorySlug) {
+      return res.status(400).json({ error: 'Missing category' });
+    }
+
+    const category = await Category.findBySlug(categorySlug);
+    if (!category) {
+      return res.status(400).json({ error: 'Category not found' });
+    }
+
+    const data = await pdfParse(req.file.buffer);
+    const articles = data.text.split('<title>');
+
+    for (const article of articles) {
+      if (article.trim() === '') continue;
+
+      const [title, ...contentParts] = article.split('<article>');
+      const content = contentParts.join('<article>').trim();
+      const slug = slugify(title.trim(), { lower: true, strict: true });
+
+      if (title.trim() && content.trim()) {
+        const existingPost = await Post.findBySlug(slug);
+        if (!existingPost) {
+          await Post.create({
+            title: title.trim(),
+            slug,
+            content: content.trim(),
+            categoryId: category.id,
+            author: 'Admin',
+            authorId: req.user?.id,
+          });
+        }
+      }
+    }
+
+    res.status(201).json({ message: 'Posts created successfully' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Failed to create posts from PDF' });
+  }
+}
 export async function listPosts(req, res) {
   const { q } = req.query;
   let posts;
