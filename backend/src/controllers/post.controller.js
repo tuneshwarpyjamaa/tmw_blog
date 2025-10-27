@@ -1,4 +1,4 @@
-import pdfParse from 'pdf-parse';
+import { PDFParse } from 'pdf-parse';
 import slugify from 'slugify';
 import { Post } from '../models/Post.js';
 import { Category } from '../models/Category.js';
@@ -19,8 +19,9 @@ export async function createPostFromPdf(req, res) {
       return res.status(400).json({ error: 'Category not found' });
     }
 
-    const data = await pdfParse(req.file.buffer);
-    const articles = data.text.split('<title>');
+    const parser = new PDFParse();
+    const result = await parser.getText({ data: req.file.buffer });
+    const articles = result.text.split('<title>');
 
     for (const article of articles) {
       if (article.trim() === '') continue;
