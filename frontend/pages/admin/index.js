@@ -26,6 +26,36 @@ export default function AdminPage() {
   const [postLoading, setPostLoading] = useState(false);
   const [postError, setPostError] = useState('');
   const [postSuccess, setPostSuccess] = useState('');
+  const [pdfFile, setPdfFile] = useState(null);
+  const [pdfCategory, setPdfCategory] = useState('');
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [pdfError, setPdfError] = useState('');
+  const [pdfSuccess, setPdfSuccess] = useState('');
+
+  async function onPdfUpload(e) {
+    e.preventDefault();
+    if (!pdfFile || !pdfCategory) {
+      setPdfError('Please select a file and a category');
+      return;
+    }
+    setPdfLoading(true);
+    setPdfError('');
+    setPdfSuccess('');
+    try {
+      const formData = new FormData();
+      formData.append('file', pdfFile);
+      formData.append('categorySlug', pdfCategory);
+      await api.post('/posts/upload/pdf', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setPdfSuccess('PDF uploaded and posts created successfully!');
+      fetchPosts(); // Refresh posts list
+    } catch (e) {
+      setPdfError('Failed to upload PDF');
+    } finally {
+      setPdfLoading(false);
+    }
+  }
 
   useEffect(() => {
     const role = getUserRole();
@@ -154,6 +184,47 @@ export default function AdminPage() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Create Post Form */}
         <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+            <h2 className="text-lg font-bold mb-4 pb-2 border-b border-gray-200">Upload PDF</h2>
+            <form onSubmit={onPdfUpload} className="space-y-3">
+              <div>
+                <label className={labelStyles}>PDF File</label>
+                <input
+                  type="file"
+                  onChange={(e) => setPdfFile(e.target.files[0])}
+                  className={inputStyles}
+                  accept=".pdf"
+                />
+              </div>
+              <div>
+                <label className={labelStyles}>Category</label>
+                <select
+                  className={inputStyles}
+                  value={pdfCategory}
+                  onChange={(e) => setPdfCategory(e.target.value)}
+                  required
+                >
+                  <option value="">Select category</option>
+                  {categories.map(cat => (
+                    <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                  ))}
+                </select>
+              </div>
+              <button disabled={pdfLoading} className={`${buttonStyles} w-full py-2.5`}>
+                {pdfLoading ? 'Uploading...' : 'Upload PDF'}
+              </button>
+            </form>
+            {pdfError && (
+              <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                {pdfError}
+              </div>
+            )}
+            {pdfSuccess && (
+              <div className="mt-3 p-2 bg-green-50 border border-green-200 rounded text-green-700 text-sm">
+                {pdfSuccess}
+              </div>
+            )}
+          </div>
           <h2 className="text-lg font-bold mb-4 pb-2 border-b border-gray-200">Create New Post</h2>
           <form onSubmit={onPostSubmit} className="space-y-3">
             <div className="grid grid-cols-2 gap-3">
